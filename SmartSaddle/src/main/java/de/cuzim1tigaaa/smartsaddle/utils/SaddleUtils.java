@@ -5,7 +5,6 @@ import de.cuzim1tigaaa.smartsaddle.files.Config;
 import de.cuzim1tigaaa.smartsaddle.files.Paths;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Horse;
 import org.bukkit.inventory.ItemFlag;
@@ -36,7 +35,7 @@ public class SaddleUtils {
 
 		meta.setDisplayName(Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_NAME, "TYPE",
 				SmartSaddle.capitalizeFully(abstractHorse.getType().name())));
-		meta.addEnchant(Enchantment.UNBREAKING, 3, false);
+		meta.addEnchant(Registry.ENCHANTMENT.get(NamespacedKey.minecraft("unbreaking")), 3, false);
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
 		String message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE,
