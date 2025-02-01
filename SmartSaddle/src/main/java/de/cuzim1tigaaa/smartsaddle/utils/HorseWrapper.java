@@ -50,7 +50,7 @@ public class HorseWrapper {
 		h.setLoveModeTicks(getOrDefault(jsonObject, LOVE_MODE_TICKS, h.getLoveModeTicks()).getAsInt());
 		plugin.getHorseData().getMovementSpeed(h).setBaseValue(
 				getOrDefault(jsonObject, SPEED, plugin.getHorseData().getMovementSpeed(h)).getAsDouble());
-		plugin.getHorseData().getMovementSpeed(h).setBaseValue(
+		plugin.getHorseData().getMaxHealth(h).setBaseValue(
 				getOrDefault(jsonObject, MAX_HEALTH, plugin.getHorseData().getMaxHealth(h)).getAsDouble());
 		h.setHealth(getOrDefault(jsonObject, HEALTH, h.getHealth()).getAsDouble());
 		h.setTamed(true);
