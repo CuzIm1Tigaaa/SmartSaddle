@@ -10,6 +10,20 @@ import org.bukkit.inventory.ItemStack;
 
 public class HorseWrapper {
 
+	private static final String TYPE = "type";
+	private static final String NAME = "name";
+	private static final String JUMP_STRENGTH = "jumpStrength";
+	private static final String SPEED = "speed";
+	private static final String MAX_HEALTH = "maxHealth";
+	private static final String HEALTH = "health";
+	private static final String LOVE_MODE_TICKS = "loveModeTicks";
+
+	private static final String IS_CARRYING_CHEST = "isCarryingChest";
+	private static final String INVENTORY = "inventory";
+
+	private static final String STYLE = "style";
+	private static final String COLOR = "color";
+
 	private final SmartSaddle plugin;
 
 	public HorseWrapper(SmartSaddle plugin) {
@@ -18,7 +32,7 @@ public class HorseWrapper {
 
 	public AbstractHorse deserialize(String json, Location location) throws JsonParseException {
 		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-		EntityType type = EntityType.valueOf(jsonObject.get("type").getAsString());
+		EntityType type = EntityType.valueOf(getOrDefault(jsonObject, TYPE, EntityType.HORSE).getAsString());
 
 		AbstractHorse h = (AbstractHorse) location.getWorld().spawnEntity(location, type);
 		switch(type) {
@@ -29,17 +43,20 @@ public class HorseWrapper {
 		}
 
 		if(h instanceof ChestedHorse chestedHorse)
-			chestedHorse.setCarryingChest(jsonObject.get("isCarryingChest").getAsBoolean());
+			chestedHorse.setCarryingChest(getOrDefault(jsonObject, IS_CARRYING_CHEST, false).getAsBoolean());
 
-		h.setCustomName(jsonObject.get("name").getAsString());
-		h.setAge(jsonObject.get("age").getAsInt());
-		h.setJumpStrength(jsonObject.get("jumpStrength").getAsDouble());
-		plugin.getHorseData().getMovementSpeed(h).setBaseValue(jsonObject.get("speed").getAsDouble());
-		plugin.getHorseData().getMaxHealth(h).setBaseValue(jsonObject.get("maxHealth").getAsDouble());
-		h.setHealth(jsonObject.get("health").getAsDouble());
+		h.setCustomName(getOrDefault(jsonObject, NAME, "").getAsString());
+		h.setJumpStrength(getOrDefault(jsonObject, JUMP_STRENGTH, h.getJumpStrength()).getAsDouble());
+		h.setLoveModeTicks(getOrDefault(jsonObject, LOVE_MODE_TICKS, h.getLoveModeTicks()).getAsInt());
+		plugin.getHorseData().getMovementSpeed(h).setBaseValue(
+				getOrDefault(jsonObject, SPEED, plugin.getHorseData().getMovementSpeed(h)).getAsDouble());
+		plugin.getHorseData().getMovementSpeed(h).setBaseValue(
+				getOrDefault(jsonObject, MAX_HEALTH, plugin.getHorseData().getMaxHealth(h)).getAsDouble());
+		h.setHealth(getOrDefault(jsonObject, HEALTH, h.getHealth()).getAsDouble());
 		h.setTamed(true);
 
-		ReadWriteNBT nbt = NBT.parseNBT(jsonObject.get("inventory").getAsString());
+		ReadWriteNBT nbt = NBT.parseNBT(
+				getOrDefault(jsonObject, INVENTORY, NBT.itemStackArrayToNBT(new ItemStack[0])).getAsString());
 		ItemStack[] contents = NBT.itemStackArrayFromNBT(nbt);
 		h.getInventory().setContents(contents);
 		return h;
@@ -47,34 +64,33 @@ public class HorseWrapper {
 
 	public JsonElement serialize(AbstractHorse src) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("type", src.getType().name());
-		jsonObject.addProperty("name", src.getCustomName() == null ? "" : src.getCustomName());
-		jsonObject.addProperty("age", src.getAge());
-		jsonObject.addProperty("jumpStrength", src.getJumpStrength());
-		jsonObject.addProperty("speed", plugin.getHorseData().getMovementSpeed(src).getValue());
-		jsonObject.addProperty("maxHealth", plugin.getHorseData().getMaxHealth(src).getValue());
-		jsonObject.addProperty("health", src.getHealth());
+		jsonObject.addProperty(TYPE, src.getType().name());
+		jsonObject.addProperty(NAME, src.getCustomName() == null ? "" : src.getCustomName());
+		jsonObject.addProperty(JUMP_STRENGTH, src.getJumpStrength());
+		jsonObject.addProperty(LOVE_MODE_TICKS, src.getLoveModeTicks());
+		jsonObject.addProperty(SPEED, plugin.getHorseData().getMovementSpeed(src).getValue());
+		jsonObject.addProperty(MAX_HEALTH, plugin.getHorseData().getMaxHealth(src).getValue());
+		jsonObject.addProperty(HEALTH, src.getHealth());
 
 		ItemStack[] inventory = src.getInventory().getContents();
-		jsonObject.addProperty("inventory", NBT.itemStackArrayToNBT(inventory).toString());
+		jsonObject.addProperty(INVENTORY, NBT.itemStackArrayToNBT(inventory).toString());
 
 		if(src instanceof Horse horse) {
-			jsonObject.addProperty("style", horse.getStyle().name());
-			jsonObject.addProperty("color", horse.getColor().name());
+			jsonObject.addProperty(STYLE, horse.getStyle().name());
+			jsonObject.addProperty(COLOR, horse.getColor().name());
 		}
 
 		if(src instanceof ChestedHorse chestedHorse)
-			jsonObject.addProperty("isCarryingChest", chestedHorse.isCarryingChest());
+			jsonObject.addProperty(IS_CARRYING_CHEST, chestedHorse.isCarryingChest());
 
 		return jsonObject;
 	}
 
-
 	private Horse deserializeHorse(AbstractHorse abstractHorse, JsonObject jsonObject) {
 		Horse horse = (Horse) abstractHorse;
 
-		Horse.Style style = Horse.Style.valueOf(jsonObject.get("style").getAsString());
-		Horse.Color color = Horse.Color.valueOf(jsonObject.get("color").getAsString());
+		Horse.Style style = Horse.Style.valueOf(getOrDefault(jsonObject, STYLE, Horse.Style.NONE).getAsString());
+		Horse.Color color = Horse.Color.valueOf(getOrDefault(jsonObject, COLOR, Horse.Color.WHITE).getAsString());
 
 		horse.setStyle(style);
 		horse.setColor(color);
@@ -85,5 +101,9 @@ public class HorseWrapper {
 		SkeletonHorse sHorse = (SkeletonHorse) abstractHorse;
 		sHorse.setTrapped(false);
 		return sHorse;
+	}
+
+	private JsonElement getOrDefault(JsonObject jsonObject, String key, Object defaultValue) {
+		return jsonObject.has(key) ? jsonObject.get(key) : new Gson().toJsonTree(defaultValue);
 	}
 }
