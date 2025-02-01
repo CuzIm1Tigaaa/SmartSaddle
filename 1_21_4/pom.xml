@@ -22,7 +22,7 @@
         <dependency>
             <groupId>de.cuzim1tigaaa.smartsaddle</groupId>
             <artifactId>AbstractHorse</artifactId>
-            <version>1.2</version>
+            <version>${project.parent.versio}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
