@@ -2,9 +2,10 @@ name: ${project.name}
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}
 api-version: '1.20'
-depends: [ 'NBTApi' ]
+depend:
+  - NBTAPI
 authors: [ CuzIm1Tigaaa ]
-description: 'TODO'
+description: 'Plugin used to easily transport mounts accross worlds and even servers'
 commands:
   smartsaddle:
     description: 'Reload the config files'
