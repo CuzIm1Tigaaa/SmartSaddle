@@ -32,8 +32,10 @@ public final class SmartSaddle extends JavaPlugin {
 
 	public void reload() {
 		getLogger().log(Level.INFO, "Loading plugin files...");
-		Config.getConfig().loadConfig(this);
-		Config.getConfig().loadMessages(this);
+		Config config = Config.getConfig();
+		config.loadConfig(this);
+		config.loadMessages(this);
+		config.loadTranslations(this);
 	}
 
 	public static String capitalizeFully(String s) {

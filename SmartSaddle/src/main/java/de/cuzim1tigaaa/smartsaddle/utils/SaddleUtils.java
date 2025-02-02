@@ -30,25 +30,35 @@ public class SaddleUtils {
 	public ItemStack saveHorseToSaddle(AbstractHorse abstractHorse) {
 		ItemStack saddle = abstractHorse.getInventory().getSaddle();
 		ItemMeta meta = saddle.getItemMeta();
-		meta.getPersistentDataContainer()
-				.set(horseDataKey, PersistentDataType.STRING, horseWrapper.serialize(abstractHorse).toString());
-
-		meta.setDisplayName(Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_NAME, "TYPE",
-				SmartSaddle.capitalizeFully(abstractHorse.getType().name())));
+		meta.getPersistentDataContainer().set(horseDataKey, PersistentDataType.STRING, horseWrapper.serialize(abstractHorse).toString());
 		meta.addEnchant(Registry.ENCHANTMENT.get(NamespacedKey.minecraft("unbreaking")), 3, false);
 		meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
-		String message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE,
-				"CUSTOM_NAME", abstractHorse.getCustomName() == null ? ChatColor.RED + "/" : abstractHorse.getCustomName(),
-				"JUMP_STRENGTH", String.format("%.2f", abstractHorse.getJumpStrength()),
-				"SPEED", String.format("%.2f", plugin.getHorseData().getMovementSpeed(abstractHorse).getValue()),
-				"MAX_HEALTH", String.format("%.2f", plugin.getHorseData().getMaxHealth(abstractHorse).getValue()),
-				"HEALTH", String.format("%.2f", abstractHorse.getHealth()));
+		Config config = Config.getConfig();
 
+		meta.setDisplayName(config.getMessage(Paths.MESSAGES_SADDLE_NAME, "TYPE",
+				SmartSaddle.capitalizeFully(config.getTranslation("entity." + abstractHorse.getType().name().toLowerCase()))));
+
+		String message;
 		if(abstractHorse instanceof Horse horse) {
-			message += Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE_HORSE,
-					"COLOR", SmartSaddle.capitalizeFully(horse.getColor().name()),
-					"STYLE", SmartSaddle.capitalizeFully(horse.getStyle().name()));
+			message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE_HORSE,
+					"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + horse.getType().name().toLowerCase())),
+					"CUSTOM_NAME", abstractHorse.getCustomName() == null ? ChatColor.RED + "/" : abstractHorse.getCustomName(),
+					"JUMP_STRENGTH", String.format("%.2f", abstractHorse.getJumpStrength()),
+					"SPEED", String.format("%.2f", plugin.getHorseData().getMovementSpeed(abstractHorse).getValue()),
+					"MAX_HEALTH", String.format("%.2f", plugin.getHorseData().getMaxHealth(abstractHorse).getValue()),
+					"HEALTH", String.format("%.2f", abstractHorse.getHealth()),
+					"COLOR", SmartSaddle.capitalizeFully(config.getTranslation("horse.color." + horse.getColor().name().toLowerCase())),
+					"STYLE", SmartSaddle.capitalizeFully(config.getTranslation("horse.style." + horse.getStyle().name().toLowerCase())));
+
+		}else {
+			message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE,
+					"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + abstractHorse.getType().name().toLowerCase())),
+					"CUSTOM_NAME", abstractHorse.getCustomName() == null ? ChatColor.RED + "/" : abstractHorse.getCustomName(),
+					"JUMP_STRENGTH", String.format("%.2f", abstractHorse.getJumpStrength()),
+					"SPEED", String.format("%.2f", plugin.getHorseData().getMovementSpeed(abstractHorse).getValue()),
+					"MAX_HEALTH", String.format("%.2f", plugin.getHorseData().getMaxHealth(abstractHorse).getValue()),
+					"HEALTH", String.format("%.2f", abstractHorse.getHealth()));
 		}
 
 		meta.setLore(new ArrayList<>(List.of(message.split("\n"))));
@@ -63,6 +73,6 @@ public class SaddleUtils {
 			return false;
 
 		AbstractHorse horse = horseWrapper.deserialize(data, location);
-		return true;
+		return horse != null && horse.isValid();
 	}
 }
