@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
+import org.bukkit.persistence.PersistentDataType;
 
 public class SaddleEvent implements Listener {
 
@@ -29,6 +30,18 @@ public class SaddleEvent implements Listener {
 
 		if(!(event.getInventory() instanceof AbstractHorseInventory horseInv))
 			return;
+
+		if(event.getCurrentItem() != null) {
+			ItemStack item = event.getCurrentItem();
+			if(item.getType() != Material.SADDLE)
+				return;
+
+			if(!item.getItemMeta().getPersistentDataContainer().has(saddleUtils.getHorseDataKey(), PersistentDataType.STRING))
+				return;
+
+			event.setCancelled(true);
+			return;
+		}
 
 		if(event.getRawSlot() != 0 || horseInv.getSaddle() == null)
 			return;
