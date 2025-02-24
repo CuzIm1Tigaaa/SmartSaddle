@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class HorseWrapper {
 
+	// for general mounts
 	private static final String TYPE = "type";
 	private static final String NAME = "name";
 	private static final String JUMP_STRENGTH = "jumpStrength";
@@ -18,9 +19,11 @@ public class HorseWrapper {
 	private static final String HEALTH = "health";
 	private static final String LOVE_MODE_TICKS = "loveModeTicks";
 
+	// for donkeys
 	private static final String IS_CARRYING_CHEST = "isCarryingChest";
 	private static final String INVENTORY = "inventory";
 
+	// for horses
 	private static final String STYLE = "style";
 	private static final String COLOR = "color";
 
@@ -68,7 +71,7 @@ public class HorseWrapper {
 		jsonObject.addProperty(NAME, src.getCustomName() == null ? "" : src.getCustomName());
 		jsonObject.addProperty(JUMP_STRENGTH, src.getJumpStrength());
 		jsonObject.addProperty(LOVE_MODE_TICKS, src.getLoveModeTicks());
-		jsonObject.addProperty(SPEED, plugin.getHorseData().getMovementSpeed(src).getValue());
+		jsonObject.addProperty(SPEED, plugin.getHorseData().getMovementSpeed(src).getDefaultValue());
 		jsonObject.addProperty(MAX_HEALTH, plugin.getHorseData().getMaxHealth(src).getValue());
 		jsonObject.addProperty(HEALTH, src.getHealth());
 
