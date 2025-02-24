@@ -36,11 +36,10 @@ public class SaddleEvent implements Listener {
 			if(item.getType() != Material.SADDLE)
 				return;
 
-			if(!item.getItemMeta().getPersistentDataContainer().has(saddleUtils.getHorseDataKey(), PersistentDataType.STRING))
+			if(item.getItemMeta().getPersistentDataContainer().has(saddleUtils.getHorseDataKey(), PersistentDataType.STRING)) {
+				event.setCancelled(true);
 				return;
-
-			event.setCancelled(true);
-			return;
+			}
 		}
 
 		if(event.getRawSlot() != 0 || horseInv.getSaddle() == null)
