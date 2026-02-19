@@ -26,5 +26,17 @@ permissions:
             default: false
           smartsaddle.use.mule:
             default: false
+          smartsaddle.use.llama:
+            default: false
+          smartsaddle.use.trader_llama:
+            default: false
           smartsaddle.use.camel:
+            default: false
+          smartsaddle.use.camel_husk:
+            default: false
+          smartsaddle.use.nautilus:
+            default: false
+          smartsaddle.use.zombie_nautilus:
+            default: false
+          smartsaddle.use.happy_ghast:
             default: false

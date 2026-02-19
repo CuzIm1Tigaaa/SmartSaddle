@@ -107,7 +107,8 @@ public class Config {
 
 			set(messagesFile, Paths.MESSAGES_SADDLE_NAME, "&6%TYPE%",
 					"Name of the saddle. The following placeholders can be used:",
-					"%TYPE% - The type of the horse");
+					"%TYPE% - The type of the entity");
+
 			set(messagesFile, Paths.MESSAGES_SADDLE_LORE, List.of(
 							"",
 							"&7Custom Name: &6%CUSTOM_NAME%",
@@ -145,6 +146,69 @@ public class Config {
 					"%COLOR% - The color of the horse",
 					"%STYLE% - The style of the horse");
 
+			set(messagesFile, Paths.MESSAGES_SADDLE_LORE_LLAMA, List.of(
+							"",
+							"&7Custom Name: &6%CUSTOM_NAME%",
+							"&7Jump Strength: &6%JUMP_STRENGTH%",
+							"&7Speed: &6%SPEED%",
+							"&7Max Health: &6%MAX_HEALTH%",
+							"&7Health: &6%HEALTH%",
+							"",
+							"&7Color: &6%COLOR%"
+					),
+					"Lore data for llama saddles. The following placeholders can be used:",
+					"%TYPE% - The type of the llama",
+					"%CUSTOM_NAME% - The custom name of the llama",
+					"%JUMP_STRENGTH% - The jump strength of the llama",
+					"%SPEED% - The speed of the llama",
+					"%MAX_HEALTH% - The max health of the llama",
+					"%HEALTH% - The health of the llama",
+					"%COLOR% - The color of the llama");
+
+			set(messagesFile, Paths.MESSAGES_SADDLE_LORE_NAUTILUS, List.of(
+							"",
+							"&7Custom Name: &6%CUSTOM_NAME%",
+							"&7Speed: &6%SPEED%",
+							"&7Max Health: &6%MAX_HEALTH%",
+							"&7Health: &6%HEALTH%"
+					),
+					"Lore data for nautilus saddles. The following placeholders can be used:",
+					"%TYPE% - The type of the nautilus (from translations)",
+					"%CUSTOM_NAME% - The custom name of the nautilus",
+					"%SPEED% - The speed of the nautilus",
+					"%MAX_HEALTH% - The max health of the nautilus",
+					"%HEALTH% - The health of the nautilus");
+
+			set(messagesFile, Paths.MESSAGES_SADDLE_LORE_ZOMBIE_NAUTILUS, List.of(
+							"",
+							"&7Custom Name: &6%CUSTOM_NAME%",
+							"&7Speed: &6%SPEED%",
+							"&7Max Health: &6%MAX_HEALTH%",
+							"&7Health: &6%HEALTH%",
+							"&7Variant: &6%VARIANT%"
+					),
+					"Lore data for zombie nautilus saddles. The following placeholders can be used:",
+					"%TYPE% - The type of the zombie nautilus (from translations)",
+					"%CUSTOM_NAME% - The custom name of the zombie nautilus",
+					"%SPEED% - The speed of the zombie nautilus",
+					"%MAX_HEALTH% - The max health of the zombie nautilus",
+					"%HEALTH% - The health of the zombie nautilus",
+					"%VARIANT% - The variant of the zombie nautilus (from translations)");
+
+			set(messagesFile, Paths.MESSAGES_SADDLE_LORE_HAPPY_GHAST, List.of(
+							"",
+							"&7Custom Name: &6%CUSTOM_NAME%",
+							"&7Speed: &6%SPEED%",
+							"&7Max Health: &6%MAX_HEALTH%",
+							"&7Health: &6%HEALTH%"
+					),
+					"Lore data for happy ghast harnesses. The following placeholders can be used:",
+					"%TYPE% - The type of the happy ghast",
+					"%CUSTOM_NAME% - The custom name of the happy ghast",
+					"%SPEED% - The speed of the happy ghast",
+					"%MAX_HEALTH% - The max health of the happy ghast",
+					"%HEALTH% - The health of the happy ghast");
+
 			messagesFile.save(file);
 		}catch(IOException e) {
 			plugin.getLogger().severe("Failed to load messages file!");
@@ -165,31 +229,52 @@ public class Config {
 			set(translationFile, Paths.TRANSLATION_ENTITY_DONKEY, "Donkey");
 			set(translationFile, Paths.TRANSLATION_ENTITY_MULE, "Mule");
 			set(translationFile, Paths.TRANSLATION_ENTITY_CAMEL, "Camel");
+			set(translationFile, Paths.TRANSLATION_ENTITY_CAMEL_HUSK, "Camel Husk");
 			set(translationFile, Paths.TRANSLATION_ENTITY_SKELETON_HORSE, "Skeleton Horse");
 			set(translationFile, Paths.TRANSLATION_ENTITY_ZOMBIE_HORSE, "Zombie Horse");
+			set(translationFile, Paths.TRANSLATION_ENTITY_LLAMA, "Llama");
+			set(translationFile, Paths.TRANSLATION_ENTITY_TRADER_LLAMA, "Trader Llama");
+			set(translationFile, Paths.TRANSLATION_ENTITY_NAUTILUS, "Nautilus");
+			set(translationFile, Paths.TRANSLATION_ENTITY_ZOMBIE_NAUTILUS, "Zombie Nautilus");
+			set(translationFile, Paths.TRANSLATION_ENTITY_HAPPY_GHAST, "Happy Ghast");
 
 			set(translationFile, Paths.TRANSLATION_HORSE, null, "translations for all horse colors and styles");
-			set(translationFile, Paths.TRANSLATION_COLOR, null,
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR, null,
 					"See here:",
 					"https://minecraft.wiki/w/Horse#Appearance");
 
-			set(translationFile, Paths.TRANSLATION_COLOR_WHITE, "White");
-			set(translationFile, Paths.TRANSLATION_COLOR_CREAMY, "Creamy");
-			set(translationFile, Paths.TRANSLATION_COLOR_CHESTNUT, "Chestnut");
-			set(translationFile, Paths.TRANSLATION_COLOR_BROWN, "Brown");
-			set(translationFile, Paths.TRANSLATION_COLOR_BLACK, "Black");
-			set(translationFile, Paths.TRANSLATION_COLOR_GRAY, "Gray");
-			set(translationFile, Paths.TRANSLATION_COLOR_DARK_BROWN, "Dark Brown");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_WHITE, "White");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_CREAMY, "Creamy");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_CHESTNUT, "Chestnut");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_BROWN, "Brown");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_BLACK, "Black");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_GRAY, "Gray");
+			set(translationFile, Paths.TRANSLATION_HORSE_COLOR_DARK_BROWN, "Dark Brown");
 
-			set(translationFile, Paths.TRANSLATION_STYLE, null,
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE, null,
 					"See here:",
 					"https://minecraft.wiki/w/Horse#Appearance");
 
-			set(translationFile, Paths.TRANSLATION_STYLE_NONE, "None");
-			set(translationFile, Paths.TRANSLATION_STYLE_WHITE, "White");
-			set(translationFile, Paths.TRANSLATION_STYLE_WHITEFIELD, "Whitefield");
-			set(translationFile, Paths.TRANSLATION_STYLE_WHITE_DOTS, "White Dots");
-			set(translationFile, Paths.TRANSLATION_STYLE_BLACK_DOTS, "Black Dots");
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE_NONE, "None");
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE_WHITE, "White");
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE_WHITEFIELD, "Whitefield");
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE_WHITE_DOTS, "White Dots");
+			set(translationFile, Paths.TRANSLATION_HORSE_STYLE_BLACK_DOTS, "Black Dots");
+
+			set(translationFile, Paths.TRANSLATION_LLAMA_COLOR, null,
+					"See here:",
+					"https://minecraft.wiki/w/Llama#Entity_data");
+
+			set(translationFile, Paths.TRANSLATION_LLAMA_COLOR_BROWN, "Brown");
+			set(translationFile, Paths.TRANSLATION_LLAMA_COLOR_CREAMY, "Creamy");
+			set(translationFile, Paths.TRANSLATION_LLAMA_COLOR_GRAY, "Gray");
+			set(translationFile, Paths.TRANSLATION_LLAMA_COLOR_WHITE, "White");
+
+			set(translationFile, Paths.TRANSLATION_VARIANT, null,
+					"See here:",
+					"https://minecraft.wiki/w/Zombie_Nautilus#Entity_data");
+			set(translationFile, Paths.TRANSLATION_VARIANT_TEMPERATE, "Temperate");
+			set(translationFile, Paths.TRANSLATION_VARIANT_WARM, "Coral");
 
 			translationFile.save(file);
 		}catch(IOException e) {
