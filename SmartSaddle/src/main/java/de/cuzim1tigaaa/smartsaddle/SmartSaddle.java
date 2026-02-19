@@ -3,6 +3,8 @@ package de.cuzim1tigaaa.smartsaddle;
 import de.cuzim1tigaaa.smartsaddle.command.CommandSmartSaddle;
 import de.cuzim1tigaaa.smartsaddle.files.Config;
 import de.cuzim1tigaaa.smartsaddle.listeners.SaddleEvent;
+import de.cuzim1tigaaa.smartsaddle.utils.SaddleUtils;
+import de.cuzim1tigaaa.smartsaddle.utils.wrapper.WrapperUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -18,7 +20,9 @@ import java.util.logging.Level;
 @Getter
 public final class SmartSaddle extends JavaPlugin {
 
-	private HorseData horseData;
+	private EntityData entityData;
+	private SaddleUtils saddleUtils;
+	private WrapperUtils wrapperUtils;
 
 	@Getter
 	private final NamespacedKey ownerKey = new NamespacedKey(this, "owner");
@@ -31,7 +35,10 @@ public final class SmartSaddle extends JavaPlugin {
 			return;
 		}
 
-		this.horseData = new VersionMatcher().match();
+		VersionMatcher.initAvailability();
+		this.entityData = VersionMatcher.match();
+		this.wrapperUtils = new WrapperUtils(this);
+		this.saddleUtils = new SaddleUtils(this);
 
 		reload();
 		// Plugin startup logic
