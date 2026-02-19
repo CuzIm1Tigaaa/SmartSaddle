@@ -4,16 +4,13 @@ import de.cuzim1tigaaa.smartsaddle.SmartSaddle;
 import de.cuzim1tigaaa.smartsaddle.files.*;
 import de.cuzim1tigaaa.smartsaddle.utils.SaddleUtils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.*;
+import org.bukkit.entity.AbstractHorse;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
 public class SaddleEvent implements Listener {
 
@@ -32,6 +29,17 @@ public class SaddleEvent implements Listener {
 
 		if(!(event.getInventory() instanceof AbstractHorseInventory horseInv))
 			return;
+
+		if(event.getCurrentItem() != null) {
+			ItemStack item = event.getCurrentItem();
+			if(item.getType() != Material.SADDLE)
+				return;
+
+			if(item.getItemMeta().getPersistentDataContainer().has(saddleUtils.getHorseDataKey(), PersistentDataType.STRING)) {
+				event.setCancelled(true);
+				return;
+			}
+		}
 
 		if(event.getRawSlot() != 0 || horseInv.getSaddle() == null)
 			return;
@@ -89,7 +97,7 @@ public class SaddleEvent implements Listener {
 		if(item.getType() != Material.SADDLE)
 			return;
 
-		if(saddleUtils.spawnHorseFromSaddle(player.getUniqueId(), item, event.getClickedBlock().getLocation().add(0, 1, 0))) {
+		if(saddleUtils.spawnHorseFromSaddle(item, event.getClickedBlock().getLocation().add(0, 1, 0))) {
 			event.setCancelled(true);
 			player.getInventory().remove(item);
 		}
