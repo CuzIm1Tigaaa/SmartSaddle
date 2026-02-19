@@ -3,16 +3,29 @@ package de.cuzim1tigaaa.smartsaddle;
 import de.cuzim1tigaaa.smartsaddle.command.CommandSmartSaddle;
 import de.cuzim1tigaaa.smartsaddle.files.Config;
 import de.cuzim1tigaaa.smartsaddle.listeners.SaddleEvent;
+import de.cuzim1tigaaa.smartsaddle.utils.SaddleUtils;
+import de.cuzim1tigaaa.smartsaddle.utils.wrapper.WrapperUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.AbstractHorse;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 
 @Getter
 public final class SmartSaddle extends JavaPlugin {
 
-	private HorseData horseData;
+	private EntityData entityData;
+	private SaddleUtils saddleUtils;
+	private WrapperUtils wrapperUtils;
+
+	@Getter
+	private final NamespacedKey ownerKey = new NamespacedKey(this, "owner");
 
 	@Override
 	public void onEnable() {
@@ -22,7 +35,10 @@ public final class SmartSaddle extends JavaPlugin {
 			return;
 		}
 
-		this.horseData = new VersionMatcher().match();
+		VersionMatcher.initAvailability();
+		this.entityData = VersionMatcher.match();
+		this.wrapperUtils = new WrapperUtils(this);
+		this.saddleUtils = new SaddleUtils(this);
 
 		reload();
 		// Plugin startup logic
@@ -50,5 +66,16 @@ public final class SmartSaddle extends JavaPlugin {
 			sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
 
 		return sb.toString().trim();
+	}
+
+	public boolean isOwnerOfAbstractHorse(AbstractHorse horse, UUID possibleOwner) {
+		if(horse == null || possibleOwner == null)
+			return false;
+
+		PersistentDataContainer container = horse.getPersistentDataContainer();
+		if(!container.has(ownerKey))
+			return false;
+
+		return Objects.equals(container.get(ownerKey, PersistentDataType.STRING), possibleOwner.toString());
 	}
 }

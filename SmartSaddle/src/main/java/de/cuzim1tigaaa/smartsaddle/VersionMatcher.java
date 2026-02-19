@@ -3,8 +3,7 @@ package de.cuzim1tigaaa.smartsaddle;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class VersionMatcher {
@@ -27,12 +26,29 @@ public class VersionMatcher {
 	/* This needs to be updated to reflect the newest available version wrapper */
 	private static final String FALLBACK_REVISION = "1_21_1";
 
-	public HorseData match() {
+	@Getter
+	private static boolean isNautilusAvailable, isHappyGhastAvailable;
+
+	public static void initAvailability() {
+		final String version = Bukkit.getBukkitVersion().split("-")[0];
+
+		try {
+			String[] parts = version.split("\\.");
+			int major = Integer.parseInt(parts[1]);
+			int minor = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+
+			isHappyGhastAvailable = major > 21 || (major == 21 && minor >= 6);
+			isNautilusAvailable = major > 21 || (major == 21 && minor >= 11);
+		}catch(Exception ignored) {
+		}
+	}
+
+	public static EntityData match() {
 		final String version = Bukkit.getBukkitVersion().split("-")[0];
 		String rVersion = VERSION_TO_REVISION.getOrDefault(version, FALLBACK_REVISION);
 
 		try {
-			return (HorseData) Class.forName(getClass().getPackage().getName() + ".HorseData" + rVersion)
+			return (EntityData) Class.forName(VersionMatcher.class.getPackage().getName() + ".EntityData" + rVersion)
 					.getDeclaredConstructor()
 					.newInstance();
 		}catch(ClassNotFoundException exception) {
