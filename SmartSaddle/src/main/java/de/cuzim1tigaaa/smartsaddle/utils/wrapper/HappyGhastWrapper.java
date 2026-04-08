@@ -47,7 +47,7 @@ public class HappyGhastWrapper implements EntityWrapper<HappyGhast> {
 		jsonObject.addProperty(WrapperUtils.TYPE, src.getType().name());
 		jsonObject.addProperty(WrapperUtils.NAME, src.getCustomName() == null ? "" : src.getCustomName());
 		jsonObject.addProperty(WrapperUtils.LOVE_MODE_TICKS, src.getLoveModeTicks());
-		jsonObject.addProperty(WrapperUtils.SPEED, src.getAttribute(Attribute.MOVEMENT_SPEED).getValue());
+		jsonObject.addProperty(WrapperUtils.SPEED, src.getAttribute(Attribute.MOVEMENT_SPEED).getBaseValue());
 		jsonObject.addProperty(WrapperUtils.MAX_HEALTH, src.getAttribute(Attribute.MAX_HEALTH).getValue());
 		jsonObject.addProperty(WrapperUtils.HEALTH, src.getHealth());
 

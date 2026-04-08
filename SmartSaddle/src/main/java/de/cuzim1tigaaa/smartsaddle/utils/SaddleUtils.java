@@ -75,7 +75,7 @@ public class SaddleUtils {
 					"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + horse.getType().name().toLowerCase())),
 					"CUSTOM_NAME", horse.getCustomName() == null ? ChatColor.RED + "/" : horse.getCustomName(),
 					"JUMP_STRENGTH", String.format("%.2f", horse.getJumpStrength()),
-					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(horse).getValue()),
+					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(horse).getBaseValue()),
 					"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(horse).getValue()),
 					"HEALTH", String.format("%.2f", horse.getHealth()),
 					"COLOR", SmartSaddle.capitalizeFully(config.getTranslation("horse.color." + horse.getColor().name().toLowerCase())),
@@ -84,7 +84,7 @@ public class SaddleUtils {
 					"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + llama.getType().name().toLowerCase())),
 					"CUSTOM_NAME", llama.getCustomName() == null ? ChatColor.RED + "/" : llama.getCustomName(),
 					"JUMP_STRENGTH", String.format("%.2f", llama.getJumpStrength()),
-					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(llama).getValue()),
+					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(llama).getBaseValue()),
 					"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(llama).getValue()),
 					"HEALTH", String.format("%.2f", llama.getHealth()),
 					"COLOR", SmartSaddle.capitalizeFully(config.getTranslation("horse.color." + llama.getColor().name().toLowerCase())));
@@ -92,7 +92,7 @@ public class SaddleUtils {
 					"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + abstractHorse.getType().name().toLowerCase())),
 					"CUSTOM_NAME", abstractHorse.getCustomName() == null ? ChatColor.RED + "/" : abstractHorse.getCustomName(),
 					"JUMP_STRENGTH", String.format("%.2f", abstractHorse.getJumpStrength()),
-					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(abstractHorse).getValue()),
+					"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(abstractHorse).getBaseValue()),
 					"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(abstractHorse).getValue()),
 					"HEALTH", String.format("%.2f", abstractHorse.getHealth()));
 			default -> message = null;
@@ -103,7 +103,7 @@ public class SaddleUtils {
 				message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE_NAUTILUS,
 						"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + nautilus.getType().name().toLowerCase())),
 						"CUSTOM_NAME", nautilus.getCustomName() == null ? ChatColor.RED + "/" : nautilus.getCustomName(),
-						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(nautilus).getValue()),
+						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(nautilus).getBaseValue()),
 						"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(nautilus).getValue()),
 						"HEALTH", String.format("%.2f", nautilus.getHealth()));
 			}
@@ -112,7 +112,7 @@ public class SaddleUtils {
 				message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE_ZOMBIE_NAUTILUS,
 						"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + zNautilus.getType().name().toLowerCase())),
 						"CUSTOM_NAME", zNautilus.getCustomName() == null ? ChatColor.RED + "/" : zNautilus.getCustomName(),
-						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(zNautilus).getValue()),
+						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(zNautilus).getBaseValue()),
 						"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(zNautilus).getValue()),
 						"HEALTH", String.format("%.2f", zNautilus.getHealth()),
 						"VARIANT", SmartSaddle.capitalizeFully(config.getTranslation("nautilus.variant." + ((Keyed) zNautilus.getVariant()).getKey().getKey().toLowerCase())));
@@ -124,7 +124,7 @@ public class SaddleUtils {
 				message = Config.getConfig().getMessage(Paths.MESSAGES_SADDLE_LORE_HAPPY_GHAST,
 						"TYPE", SmartSaddle.capitalizeFully(config.getTranslation("entity." + happyGhast.getType().name().toLowerCase())),
 						"CUSTOM_NAME", happyGhast.getCustomName() == null ? ChatColor.RED + "/" : happyGhast.getCustomName(),
-						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(happyGhast).getValue()),
+						"SPEED", String.format("%.2f", plugin.getEntityData().getMovementSpeed(happyGhast).getBaseValue()),
 						"MAX_HEALTH", String.format("%.2f", plugin.getEntityData().getMaxHealth(happyGhast).getValue()),
 						"HEALTH", String.format("%.2f", happyGhast.getHealth()));
 			}
