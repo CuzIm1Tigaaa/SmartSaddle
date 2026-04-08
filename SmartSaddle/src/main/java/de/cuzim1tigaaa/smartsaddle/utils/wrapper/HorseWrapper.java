@@ -55,7 +55,7 @@ public class HorseWrapper implements EntityWrapper<AbstractHorse> {
 		jsonObject.addProperty(WrapperUtils.NAME, src.getCustomName() == null ? "" : src.getCustomName());
 		jsonObject.addProperty(WrapperUtils.JUMP_STRENGTH, src.getJumpStrength());
 		jsonObject.addProperty(WrapperUtils.LOVE_MODE_TICKS, src.getLoveModeTicks());
-		jsonObject.addProperty(WrapperUtils.SPEED, plugin.getEntityData().getMovementSpeed(src).getValue());
+		jsonObject.addProperty(WrapperUtils.SPEED, plugin.getEntityData().getMovementSpeed(src).getBaseValue());
 		jsonObject.addProperty(WrapperUtils.MAX_HEALTH, plugin.getEntityData().getMaxHealth(src).getValue());
 		jsonObject.addProperty(WrapperUtils.HEALTH, src.getHealth());
 

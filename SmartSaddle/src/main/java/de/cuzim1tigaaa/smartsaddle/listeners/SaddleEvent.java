@@ -12,10 +12,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 public class SaddleEvent implements Listener {
 
@@ -41,17 +41,6 @@ public class SaddleEvent implements Listener {
 		InventoryHolder holder = inventory.getHolder();
 		if(holder == null)
 			return;
-
-		if(event.getCurrentItem() != null) {
-			ItemStack item = event.getCurrentItem();
-			if(item.getType() != Material.SADDLE)
-				return;
-
-			if(item.getItemMeta().getPersistentDataContainer().has(saddleUtils.getDataKey(), PersistentDataType.STRING)) {
-				event.setCancelled(true);
-				return;
-			}
-		}
 
 		EntityWrapper<? extends LivingEntity> targetWrapper = null;
 		for(EntityWrapper<?> wrapper : wrapperUtils.getWrappers().values()) {
@@ -83,6 +72,7 @@ public class SaddleEvent implements Listener {
 		if(event.isShiftClick())
 			player.updateInventory();
 
+		event.setCancelled(true);
 		player.getInventory().addItem(saddleUtils.saveEntityToSaddle(entity));
 		entity.removePassenger(player);
 		entity.remove();
