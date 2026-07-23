@@ -29,9 +29,11 @@ public class SaddleEvent implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onSaddleRemove(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
+		if(!(event.getWhoClicked() instanceof Player player))
+			return;
+
 		if(Config.getConfig().getDisabledWorlds().contains(player.getWorld().getName()))
 			return;
 
@@ -44,25 +46,22 @@ public class SaddleEvent implements Listener {
 			return;
 
 		InventoryHolder holder = inventory.getHolder();
-		if(holder == null)
+		if (!(holder instanceof LivingEntity entity))
 			return;
 
-		EntityWrapper<? extends LivingEntity> targetWrapper = null;
-		for(EntityWrapper<?> wrapper : wrapperUtils.getWrappers().values()) {
-			if(wrapper.isHolderInstance(holder)) {
-				targetWrapper = wrapper;
-				break;
-			}
-		}
+		EntityWrapper<? extends LivingEntity> targetWrapper = wrapperUtils.getWrappers().values().stream()
+				.filter(wrapper -> wrapper.isHolderInstance(holder))
+				.findFirst()
+				.orElse(null);
 
-		if(targetWrapper == null)
+		if(targetWrapper == null || event.getRawSlot() != targetWrapper.getSaddleSlot(holder))
 			return;
 
-		if(event.getRawSlot() != targetWrapper.getSaddleSlot(holder))
-			return;
-
-		LivingEntity entity = (LivingEntity) holder;
 		if(!entity.getPassengers().contains(player))
+			return;
+
+		String permission = Permissions.SADDLE_USE + entity.getType().name().toLowerCase();
+		if(!player.hasPermission(permission))
 			return;
 
 		if(isInventoryFull(player)) {
@@ -70,17 +69,13 @@ public class SaddleEvent implements Listener {
 			return;
 		}
 
-		if(!player.hasPermission(Permissions.SADDLE_USE + entity.getType().name().toLowerCase()))
-			return;
-
-		event.setCancelled(true);
-		if(event.isShiftClick())
-			player.updateInventory();
-
 		event.setCancelled(true);
 		player.getInventory().addItem(saddleUtils.saveEntityToSaddle(entity));
 		entity.removePassenger(player);
 		entity.remove();
+
+		if(event.isShiftClick())
+			player.updateInventory();
 	}
 
 	@EventHandler
@@ -132,17 +127,20 @@ public class SaddleEvent implements Listener {
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK)
 			return;
 
-		if(event.getClickedBlock() == null || event.getItem() == null)
+		if(event.getClickedBlock() == null || !event.hasItem())
 			return;
 
 		ItemStack item = event.getItem();
 		ItemMeta meta = item.getItemMeta();
 
-		if(!meta.getPersistentDataContainer().has(saddleUtils.getTypeKey()))
-			if(!meta.getPersistentDataContainer().has(saddleUtils.getDataKey()))
-				return;
+		boolean hasTypeKey = meta.getPersistentDataContainer().has(saddleUtils.getTypeKey());
+		boolean hasDataKey = meta.getPersistentDataContainer().has(saddleUtils.getDataKey());
 
-		if(saddleUtils.spawnEntityFromSaddle(player.getUniqueId(), item, event.getClickedBlock().getLocation().add(0, 1, 0))) {
+		if(!(hasDataKey && hasTypeKey))
+			return;
+
+		Location spawnLocation = event.getClickedBlock().getLocation().add(0, 1, 0);
+		if(saddleUtils.spawnEntityFromSaddle(player.getUniqueId(), item, spawnLocation)) {
 			event.setCancelled(true);
 			player.getInventory().setItem(event.getHand(), new ItemStack(Material.AIR));
 		}
