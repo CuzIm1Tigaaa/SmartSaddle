@@ -6,6 +6,7 @@ import de.cuzim1tigaaa.smartsaddle.files.*;
 import de.cuzim1tigaaa.smartsaddle.utils.SaddleUtils;
 import de.cuzim1tigaaa.smartsaddle.utils.wrapper.EntityWrapper;
 import de.cuzim1tigaaa.smartsaddle.utils.wrapper.WrapperUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -36,6 +37,10 @@ public class SaddleEvent implements Listener {
 
 		Inventory inventory = event.getClickedInventory();
 		if(inventory == null)
+			return;
+
+		ItemStack saddle = event.getCurrentItem();
+		if(saddle == null || saddle.getType() != Material.SADDLE)
 			return;
 
 		InventoryHolder holder = inventory.getHolder();
