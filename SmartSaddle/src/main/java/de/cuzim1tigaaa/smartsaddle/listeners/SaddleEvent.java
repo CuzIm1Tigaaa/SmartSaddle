@@ -144,7 +144,7 @@ public class SaddleEvent implements Listener {
 
 		if(saddleUtils.spawnEntityFromSaddle(player.getUniqueId(), item, event.getClickedBlock().getLocation().add(0, 1, 0))) {
 			event.setCancelled(true);
-			player.getInventory().remove(item);
+			player.getInventory().setItem(event.getHand(), new ItemStack(Material.AIR));
 		}
 	}
 }
